@@ -1,0 +1,38 @@
+﻿<table class="table">
+    <!-- En-tête du tableau -->
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Numéro Téléphone</th>
+            <th>Adresse</th>
+            <th>Ville</th>
+            <th>CP</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Boucle sur chaque client pour afficher les informations -->
+        @foreach (var client in Model)
+        {
+            <tr>
+                <td>@client.Name</td>
+                <td>@client.Email</td>
+                <td>@client.PhoneNumber</td>
+                <td>@client.Address.Street</td>
+                <td>@client.Address.City</td>
+                <td>@client.Address.PostalCode</td>
+                <td>
+                    <!-- Formulaire de suppression du client -->
+                    <form method="post" action="@Url.Action("Delete", "Client", new { id = client.Id })" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer le client @client.Name ?')">
+                        <input type="hidden" name="addressId" value="@client.Address.Id" /> <!-- Champ caché contenant l'ID de l'adresse du client -->
+                        <button type="submit" class="btn btn-danger btn-sm">Supprimer</button> <!-- Bouton de suppression du client -->
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="text-center">
+    <a class="btn btn-primary" href="@Url.Action("Create", "Client")">Ajouter un client</a> <!-- Lien pour ajouter un nouveau client -->
+</div>

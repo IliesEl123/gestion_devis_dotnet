@@ -1,0 +1,89 @@
+﻿@{
+    ViewData["Title"] = "Devis";
+}
+@model gestion_devis.ViewModels.CreateQuoteViewModel
+
+@section Scripts {
+    <script src="/js/Quote/create.js"></script>
+}
+
+<h2>Créer un devis</h2>
+
+@using (Html.BeginForm("Create", "Quote", FormMethod.Post))
+{
+    <!-- Sélection du client -->
+    <div class="form-group">
+        @Html.LabelFor(m => m.SelectedClientId, "Client :")
+        <select id="clientList" name="SelectedClientId" class="form-control">
+            <option value="">Sélectionnez un client</option>
+            @foreach (var client in Model.Clients)
+            {
+                <!-- Options du client avec des attributs de données pour stocker les informations du client -->
+                <option value="@client.Id"
+                        data-client-name="@client.Name"
+                        data-client-email="@client.Email"
+                        data-client-phone-number="@client.PhoneNumber"
+                        data-client-street="@client.Address.Street"
+                        data-client-city="@client.Address.City"
+                        data-client-postal-code="@client.Address.PostalCode">@client.Name</option>
+            }
+        </select>
+    </div>
+
+    <!-- Détails du client sélectionné -->
+    <div id="clientDetails" style="display: none;">
+        <h4>Informations du client :</h4>
+        <div id="clientName"></div>
+        <div id="clientEmail"></div>
+        <div id="clientPhoneNumber"></div>
+        <div id="clientAddress"></div>
+
+        <!-- Champ caché pour stocker l'ID du client sélectionné -->
+        <input type="hidden" id="selectedClientId" name="SelectedClientId" value="" />
+    </div>
+
+    <!-- Sélection du produit -->
+    <div class="form-group">
+        <select id="productList" name="SelectedProductId" class="form-control">
+            <option value="">Sélectionnez un produit</option>
+            @foreach (var product in Model.Products)
+            {
+                <!-- Options du produit avec des attributs de données pour stocker les informations du produit -->
+                <option value="@product.Id" data-product-description="@product.Description" data-product-price="@product.Price">@product.Name</option>
+            }
+        </select>
+    </div>
+
+    <!-- Tableau des produits sélectionnés -->
+    <table id="selectedProductsTable" class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Prix</th>
+                <th>Quantité</th>
+                <th>Prix total</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <!-- Champ de remise en pourcentage -->
+    <div class="form-group">
+        <label for="discount">Remise en pourcentage :</label>
+        <input type="text" step="0.01" id="discount" name="discount" class="form-control" value="0" onchange="calculateTotalPrice()" />
+    </div>
+
+    <!-- Champ du prix total du devis -->
+    <div class="form-group">
+        <label for="totalPrice">Prix total du devis :</label>
+        <input type="text" step="0.01" id="totalPrice" name="totalPrice" value="0" lang="fr" class="form-control" readonly/>
+    </div>
+
+    <!-- Champ caché pour stocker les produits sélectionnés sous forme de chaîne JSON -->
+    <input type="hidden" id="selectedProducts" name="SelectedProducts" value="" />
+
+    <!-- Bouton de création du devis -->
+    <button type="submit" onclick="prepareSelectedProducts()" class="btn btn-primary">Créer le devis</button>
+}
+

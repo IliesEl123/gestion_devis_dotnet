@@ -1,0 +1,92 @@
+﻿@{
+    ViewData["Title"] = "Devis";
+}
+@model List<gestion_devis.Models.Quote>
+
+<h1>Liste des devis</h1>
+
+<!-- List déroulante pour trier les devis par Date/Client -->
+<div class="form-group">
+    <label for="sortSelect">Trier par :</label>
+    <select id="sortSelect" class="form-control">
+        <option value="date">Date</option> <!-- Option de tri par date -->
+        <option value="client">Client</option> <!-- Option de tri par client -->
+    </select>
+</div>
+
+<!-- Tableau pour afficher la liste des devis -->
+<table id="quoteTable" class="table">
+    <!-- En-tête du tableau -->
+    <thead>
+        <tr>
+            <th>Nom du client</th>
+            <th>Date</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Boucle sur chaque devis en base de données -->
+        @foreach (var quote in Model)
+        {
+            <tr>
+                <td>@quote.Client.Name</td>
+                <td>@quote.CreationDate</td>
+                <td>
+                    <a href="@Url.Action("DownloadPdf", new { id = quote.Id })" target="_blank">Devis au format PDF</a> <!-- Lien pour accéder au devis au format PDF -->
+                </td>
+                <td>
+                    <button class="btn btn-danger" onclick="deleteQuote(@quote.Id)">Supprimer</button> <!-- Bouton pour supprimer le devis -->
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="text-center">
+    <a class="btn btn-primary" href="@Url.Action("Create", "Quote")">Créer un devis</a> <!-- Bouton pour créer un devis -->
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var sortSelect = document.getElementById("sortSelect");
+            var quoteTable = document.getElementById("quoteTable");
+
+            sortSelect.addEventListener("change", function () {
+                var sortBy = sortSelect.value;
+
+                // Effectuer une requête AJAX pour récupérer les devis triés
+                var request = new XMLHttpRequest();
+                request.open("GET", "@Url.Action("SortQuote")?sortBy=" + sortBy);
+
+                request.onload = function () {
+                    if (request.status === 200) {
+                        quoteTable.innerHTML = request.responseText;
+                    }
+                };
+
+                request.send();
+            });
+        });
+    </script>
+    <script>
+        function deleteQuote(quoteId) {
+            if (confirm("Êtes-vous sûr de vouloir supprimer ce devis ?")) {
+                // Effectuer une requête AJAX pour supprimer le devis
+                var request = new XMLHttpRequest();
+                request.open("POST", "@Url.Action("DeleteQuote")?id=" + quoteId);
+
+                request.onload = function () {
+                    if (request.status === 200) {
+                        // Actualiser la table des devis
+                        var quoteTable = document.getElementById("quoteTable");
+                        quoteTable.innerHTML = request.responseText;
+                    }
+                };
+
+                request.send();
+            }
+        }
+    </script>
+}

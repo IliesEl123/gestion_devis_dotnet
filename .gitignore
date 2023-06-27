@@ -1,0 +1,50 @@
+﻿# Fichiers et dossiers générés par Visual Studio
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.pdb
+
+# Dossiers de dépendances
+packages/
+node_modules/
+bower_components/
+
+# Fichiers de configuration
+appsettings.secrets.json
+
+# Fichiers de sauvegarde
+*.bak
+*.backup
+*.swp
+
+# Fichiers de logs
+*.log
+
+# Fichiers de résultats de test
+TestResults/
+
+# Dossiers spécifiques à l'environnement de développement
+.vscode/
+.idea/
+
+# Fichiers de build
+*.dll
+*.exe
+*.tmp
+*.o
+*.so
+*.dylib
+*.nupkg
+*.rds
+*.rptproj
+*.vspscc
+
+# Fichiers de déploiement
+*.publishsettings
+*.pubxml
+*.pfx
+*.publishproj
+*.deploy

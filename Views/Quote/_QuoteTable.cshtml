@@ -1,0 +1,25 @@
+﻿@model List<gestion_devis.Models.Quote>
+
+<thead>
+    <tr>
+        <th>Nom du client</th>
+        <th>Date</th>
+        <th></th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var quote in Model)
+    {
+        <tr>
+            <td>@quote.Client.Name</td>
+            <td>@quote.CreationDate</td>
+            <td>
+                <a href="@Url.Action("DownloadPdf", new { id = quote.Id })" target="_blank">Devis au format PDF</a>
+            </td>
+            <td>
+                <button class="btn btn-danger" onclick="deleteQuote(@quote.Id)">Supprimer</button>
+            </td>
+        </tr>
+    }
+</tbody>

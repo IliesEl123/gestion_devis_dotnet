@@ -40,3 +40,19 @@ Ce projet vise à développer une application de gestion de devis pour une entre
 - **Moq (version 4.18.4)** : Utilisé pour les tests unitaires.
 - **xunit (version 2.4.2)** : Framework de tests unitaires.
 - **xunit.runner.visualstudio (version 2.4.5)** : Utilisé pour l'exécution des tests avec Visual Studio.
+
+## Prérequis
+
+Avant de pouvoir exécuter le projet, assurez-vous d'avoir les éléments suivants installés sur votre machine :
+
+- .NET Core SDK version 7.0.304
+- SQL Server (ou une autre base de données compatible) pour la persistance des données
+
+## Configuration du projet
+
+1. Cloner le dépôt GitHub : `git clone <URL du dépôt>`
+2. Ouvrir le projet dans votre environnement de développement préféré.
+3. Vérifier les configurations de connexion à la base de données dans le fichier `appsettings.json`.
+4. Exécuter les migrations pour créer la structure de base de données : `dotnet ef database update`.
+5. Compiler et exécuter le projet : `dotnet run`.
+6. Accéder à l'application dans votre navigateur à l'URL `http://localhost:5000` (ou tout autre port spécifié).
